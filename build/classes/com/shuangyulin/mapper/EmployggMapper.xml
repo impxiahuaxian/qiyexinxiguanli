@@ -1,0 +1,49 @@
+﻿<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace命名空间，为了对sql语句进行隔离，方便管理，mapper开发dao方式，使用namespace有特殊作用  
+mapper代理开发时将namespace指定为mapper接口的全限定名  
+ -->
+<mapper namespace="com.shuangyulin.mapper.EmployggMapper"> 
+<!--在mapper.xml文件中配置很多的sql语句，执行每个sql语句时，封装为MappedStatement对象 
+mapper.xml以statement为单位管理sql语句  
+ -->
+	<!-- 添加员工记录 -->
+	<insert id="addEmploygg" parameterType="employgg">
+		insert into t_employgg(employggNo,name,employggDay,employggDesc) values 
+		(#{employggNo},#{name},#{employggDay},#{employggDesc})
+	</insert>
+
+	<!-- 按照查询条件分页查询员工记录 -->
+	<select id="queryEmploygg" resultMap="employggMap" >
+		select * from t_employgg ${where} limit #{startIndex},#{pageSize}
+	</select>
+	<resultMap id="employggMap" type="employgg">
+        <id property="employggNo" column="employggNo" />
+       
+    </resultMap>
+
+    <!-- 按照查询条件查询所有员工记录 -->
+	<select id="queryEmployggList" resultMap="employggMap" >
+		select t_employgg.* from t_employgg  ${where}
+	</select>
+
+    <!-- 按照查询条件的员工记录数 -->
+	<select id="queryEmployggCount" resultType="int">
+		select count(*) from t_employgg  ${where}
+	</select>
+
+	<!-- 根据主键查询某个员工记录 -->
+	<select id="getEmploygg" parameterType="string" resultMap="employggMap">
+		select * from t_employgg where t_employgg.employggNo = #{employggNo}
+	</select>
+
+	<!-- 更新员工记录 -->
+	<update id="updateEmploygg" parameterType="employgg">
+		update t_employgg set name=#{name},employggDay=#{employggDay},employggDesc=#{employggDesc} where employggNo = #{employggNo}
+	</update>
+
+	<!-- 删除员工记录 -->
+	<delete id="deleteEmploygg" parameterType="string">
+		delete from t_employgg where employggNo=#{employggNo}
+	</delete>
+
+</mapper>
